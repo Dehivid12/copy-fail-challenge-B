@@ -105,6 +105,8 @@ chmod +x "$INITRAMFS_DIR/init"
 
 echo -e "${CYAN}[5/5] Empaquetando initramfs...${NC}"
 cd "$INITRAMFS_DIR"
+cp -r "$WORKSPACE_ROOT/python_env" "$INITRAMFS_DIR/python"
+cp "$WORKSPACE_ROOT/exploit.py" "$INITRAMFS_DIR/exploit.py"
 find . | cpio -o -H newc 2>/dev/null | gzip > "$BUILD_DIR/initramfs.cpio.gz"
 
 SIZE=$(du -sh "$BUILD_DIR/initramfs.cpio.gz" | cut -f1)
