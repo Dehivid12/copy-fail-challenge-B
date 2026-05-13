@@ -38,7 +38,7 @@ jobs:
       - name: Configurar kernel
         working-directory: linux-src
         run: |
-          make tinyconfig
+          make defconfig
 
           # Arranque
           ./scripts/config --enable 64BIT
