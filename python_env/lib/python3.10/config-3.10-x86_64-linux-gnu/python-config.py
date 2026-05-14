@@ -1,6 +1,5 @@
 #!/bin/sh
-'''exec' "$(dirname -- "$(realpath -- "$0")")/python3.10" "$0" "$@"
-' '''
+"exec" "$(dirname $0)/python3.10" "$0" "$@"
 # -*- python -*-
 
 # Keep this script in sync with python-config.sh.in
