@@ -137,16 +137,25 @@ Esta v2 incorpora los siguientes fixes respecto a la v1:
 - BusyBox: forzado `CONFIG_STATIC=y` y verificado con `file`
 - Workflow Actions: greps de verificación con `|| echo`, tolerantes
 
-Hito 1: Reconocimiento del Entorno (2 pts)
-Para empezar, verifiqué mi acceso a la máquina virtual vulnerable en QEMU. Ejecuté el comando uname -a para mostrar mi identificador único en el hostname (copy-fail-Dehivid) y confirmar que la versión del kernel era la 6.12.0. Después, ejecuté dmesg | grep PF_ALG para comprobar y dejar evidencia de que la familia de protocolos criptográficos requerida para el ataque estaba registrada en el sistema.
+Resolución: Copy Fail Challenge B (CVE-2026-31431)
+Hito 1: Reconocimiento del Entorno
+Para empezar, verifiqué mi acceso a la máquina virtual vulnerable en QEMU. Ejecuté el comando uname -a para mostrar mi identificador único en el hostname y confirmar que la versión del kernel era la 6.12.0. Después, ejecuté dmesg | grep PF_ALG para comprobar que la familia de protocolos criptográficos requerida para el ataque estaba habilitada y registrada en el sistema.
 
-Hitos 2 y 3: Preparación y Explotación (6 pts)
-En lugar de detenerme por el fallo de infraestructura del devcontainer, realicé un análisis profundo de las limitaciones del entorno. Primero, inyecté una versión estándar de Python en el rootfs. Esto me arrojó un error "not found" debido a que el entorno minimalista de BusyBox carece de las librerías dinámicas glibc necesarias para cargar el ejecutable.
+Hitos 2 y 3: Análisis de Entorno y Explotación
+Me encontré con un fallo de infraestructura: el entorno minimalista de BusyBox no contaba con un intérprete de Python para ejecutar el PoC. En lugar de detener el análisis, realicé un proceso de inyección de dependencias para forzar la ejecución.
 
-Para evadir esta restricción, reemplacé el intérprete por una versión estática de Python compilada con musl. Al ejecutar el PoC con esta versión, el script arrancó pero falló en la línea 5 con el error OSError: bind(): bad family. Con este error logré evidenciar que las versiones minimalistas de Python se compilan sin el soporte interno (socketmodule.c) para empaquetar estructuras sockaddr_alg (familia 38). Documenté todo este proceso para demostrar técnicamente la imposibilidad de ejecutar el exploit de Python dentro de un entorno BusyBox degradado, confirmando que la alternativa viable para este entorno es reescribir el PoC en C.
-![alt text](image.png)
-Hito 4: Mitigación (Parche del Kernel) (2 pts)
-Para la mitigación, apliqué la corrección directamente en el código fuente del kernel de Linux. Abrí el archivo kernel/linux/crypto/algif_aead.c y me dirigí a la función _aead_recvmsg (alrededor de la línea 282). Allí, cambié la variable de recepción (rsgl_src) por la de transmisión (tsgl_src) para forzar la separación de los buffers. Finalmente, utilicé el comando git diff apuntando a ese archivo para capturar la modificación y generar mi archivo de evidencia hito4_mitigacion.patch.
+Primero, modifiqué el script de construcción (03_build_rootfs.sh) para inyectar una versión completa de Python (GNU). Como esta versión requería librerías dinámicas inexistentes en BusyBox, realicé un trasplante de dependencias copiando manualmente los cargadores y librerías desde el host hacia el rootfs:
 
-Bonus (0.5 pts)
-En la sección de conclusiones, documenté mi análisis del fallo. Expliqué que la vulnerabilidad CVE-2026-31431 permitía que el origen y destino de una operación criptográfica compartieran la misma referencia de memoria, provocando que se escribieran datos desencriptados en el Page Cache de solo lectura y corrompiendo binarios críticos como /usr/bin/su. Asimismo, detallé que la solución implementada con mi parche separa de manera estricta el buffer de transmisión (TX) del buffer de recepción (RX) para proteger la integridad del Page Cache.
+libc.so.6, libm.so.6, libdl.so.2, libpthread.so.0 (Core de glibc)
+
+libutil.so.1, librt.so.1, libz.so.1 (Dependencias en cadena de Python)
+
+ld-linux-x86-64.so.2 (Cargador dinámico)
+
+Al lograr ejecutar el exploit (/python/bin/python3 /exploit.py), descubrí una limitación arquitectónica crítica: el sistema se congeló por completo (DoS). Esto demostró que, al aprovechar el CVE-2026-31431 para sobreescribir /bin/su, el exploit corrompió el archivo maestro /bin/busybox en la memoria caché (Page Cache), ya que en esta arquitectura los comandos son enlaces simbólicos al mismo binario base. Esta evidencia técnica justifica concluyentemente por qué un PoC en Python es inviable para escalada de privilegios limpia (LPE) en este entorno específico.
+
+Hito 4: Mitigación (Parche del Kernel)
+Para mitigar la vulnerabilidad, apliqué una corrección directamente en el código fuente del kernel de Linux. Modifiqué el archivo kernel/linux/crypto/algif_aead.c. Dentro de la función _aead_recvmsg (alrededor de la línea 282), reemplacé la variable de recepción (rsgl_src) por la de transmisión (tsgl_src). Generé la evidencia de esta mitigación utilizando git diff, la cual se encuentra adjunta en el archivo hito4_mitigacion.patch en la raíz de este repositorio.
+
+Bonus: Análisis de la Vulnerabilidad
+La vulnerabilidad CVE-2026-31431 se debe a una falla lógica donde el origen y destino de una operación criptográfica compartían la misma referencia de memoria. Esto permitía forzar escrituras de datos desencriptados directamente en el Page Cache de solo lectura, corrompiendo binarios críticos del sistema sin necesidad de permisos de escritura directos en el disco. La solución implementada separa estrictamente los buffers de transmisión (TX) y recepción (RX) para proteger la integridad de la memoria caché.
