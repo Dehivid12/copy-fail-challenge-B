@@ -34,7 +34,6 @@ extern PyObject* PyInit__codecs_jp(void);
 extern PyObject* PyInit__codecs_kr(void);
 extern PyObject* PyInit__codecs_tw(void);
 extern PyObject* PyInit__contextvars(void);
-extern PyObject* PyInit__crypt(void);
 extern PyObject* PyInit__csv(void);
 extern PyObject* PyInit__ctypes(void);
 extern PyObject* PyInit__ctypes_test(void);
@@ -84,6 +83,7 @@ extern PyObject* PyInit_fcntl(void);
 extern PyObject* PyInit_grp(void);
 extern PyObject* PyInit_math(void);
 extern PyObject* PyInit_mmap(void);
+extern PyObject* PyInit_ossaudiodev(void);
 extern PyObject* PyInit_pyexpat(void);
 extern PyObject* PyInit_readline(void);
 extern PyObject* PyInit_resource(void);
@@ -139,7 +139,6 @@ struct _inittab _PyImport_Inittab[] = {
     {"_codecs_kr", PyInit__codecs_kr},
     {"_codecs_tw", PyInit__codecs_tw},
     {"_contextvars", PyInit__contextvars},
-    {"_crypt", PyInit__crypt},
     {"_csv", PyInit__csv},
     {"_ctypes", PyInit__ctypes},
     {"_ctypes_test", PyInit__ctypes_test},
@@ -189,6 +188,7 @@ struct _inittab _PyImport_Inittab[] = {
     {"grp", PyInit_grp},
     {"math", PyInit_math},
     {"mmap", PyInit_mmap},
+    {"ossaudiodev", PyInit_ossaudiodev},
     {"pyexpat", PyInit_pyexpat},
     {"readline", PyInit_readline},
     {"resource", PyInit_resource},

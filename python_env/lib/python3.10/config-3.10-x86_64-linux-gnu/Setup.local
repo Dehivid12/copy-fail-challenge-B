@@ -5,9 +5,12 @@ _gdbm
 _scproxy
 _testcapi
 nis
-ossaudiodev
 xxlimited
 xxlimited_35
+
+*shared*
+
+_crypt _cryptmodule.c -lcrypt
 
 *static*
 
@@ -22,7 +25,6 @@ _codecs_jp cjkcodecs/_codecs_jp.c
 _codecs_kr cjkcodecs/_codecs_kr.c
 _codecs_tw cjkcodecs/_codecs_tw.c
 _contextvars _contextvarsmodule.c
-_crypt _cryptmodule.c -lcrypt
 _csv _csv.c
 _ctypes _ctypes/_ctypes.c _ctypes/callbacks.c _ctypes/callproc.c _ctypes/stgdict.c _ctypes/cfield.c    -I/tools/deps/include -lffi -ldl
 _ctypes_test _ctypes/_ctypes_test.c -lm
@@ -32,7 +34,7 @@ _datetime _datetimemodule.c
 _dbm _dbmmodule.c -DHAVE_BERKDB_H -DDB_DBM_HSEARCH -I/tools/deps/include -ldb
 _decimal _decimal/_decimal.c  -I/tools/deps/include -lmpdec
 _elementtree _elementtree.c -lexpat
-_hashlib _hashopenssl.c -I/tools/deps/include -lcrypto
+_hashlib _hashopenssl.c -I/tools/deps/include -lcrypto -l:libatomic.a
 _heapq _heapqmodule.c
 _json _json.c
 _lsprof _lsprof.c rotatingtree.c
@@ -52,7 +54,7 @@ _sha3 _sha3/sha3module.c -IModules/_hacl/include
 _sha512 sha512module.c
 _socket socketmodule.c
 _sqlite3 _sqlite/connection.c _sqlite/cursor.c _sqlite/microprotocols.c _sqlite/module.c _sqlite/prepare_protocol.c _sqlite/row.c _sqlite/statement.c _sqlite/util.c _sqlite/cache.c   -IModules/_sqlite -I/tools/deps/include -lsqlite3
-_ssl _ssl.c -I/tools/deps/include -lssl -lcrypto
+_ssl _ssl.c -I/tools/deps/include -lssl -lcrypto -l:libatomic.a
 _statistics _statisticsmodule.c
 _struct _struct.c
 _testbuffer _testbuffer.c
@@ -72,6 +74,7 @@ fcntl fcntlmodule.c
 grp grpmodule.c
 math mathmodule.c _math.c -lm
 mmap mmapmodule.c
+ossaudiodev ossaudiodev.c
 pyexpat pyexpat.c -lexpat
 readline readline.c  -I/tools/deps/libedit/include -I/tools/deps/libedit/include/ncursesw -ledit -lncursesw
 resource resource.c

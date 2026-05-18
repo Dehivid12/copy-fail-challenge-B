@@ -105,6 +105,21 @@ chmod +x "$INITRAMFS_DIR/init"
 
 echo -e "${CYAN}[5/5] Empaquetando initramfs...${NC}"
 cd "$INITRAMFS_DIR"
+echo -e "${CYAN}[5/5] Empaquetando initramfs...${NC}"
+cd "$INITRAMFS_DIR"
+
+# --- INYECCIÓN DE GLIBC ---
+mkdir -p "$INITRAMFS_DIR/lib/x86_64-linux-gnu" "$INITRAMFS_DIR/lib64"
+cp -L /lib/x86_64-linux-gnu/libc.so.6 "$INITRAMFS_DIR/lib/x86_64-linux-gnu/"
+cp -L /lib/x86_64-linux-gnu/libm.so.6 "$INITRAMFS_DIR/lib/x86_64-linux-gnu/"
+cp -L /lib/x86_64-linux-gnu/libdl.so.2 "$INITRAMFS_DIR/lib/x86_64-linux-gnu/" 2>/dev/null || true
+cp -L /lib/x86_64-linux-gnu/libpthread.so.0 "$INITRAMFS_DIR/lib/x86_64-linux-gnu/" 2>/dev/null || true
+cp -L /lib/x86_64-linux-gnu/libutil.so* "$INITRAMFS_DIR/lib/x86_64-linux-gnu/" 2>/dev/null || true
+cp -L /lib/x86_64-linux-gnu/librt.so.1 "$INITRAMFS_DIR/lib/x86_64-linux-gnu/" 2>/dev/null || true
+cp -L /lib/x86_64-linux-gnu/libz.so.1 "$INITRAMFS_DIR/lib/x86_64-linux-gnu/" 2>/dev/null || true
+cp -L /lib64/ld-linux-x86-64.so.2 "$INITRAMFS_DIR/lib64/"
+# --------------------------
+
 cp -r "$WORKSPACE_ROOT/python_env" "$INITRAMFS_DIR/python"
 cp "$WORKSPACE_ROOT/exploit.py" "$INITRAMFS_DIR/exploit.py"
 find . | cpio -o -H newc 2>/dev/null | gzip > "$BUILD_DIR/initramfs.cpio.gz"

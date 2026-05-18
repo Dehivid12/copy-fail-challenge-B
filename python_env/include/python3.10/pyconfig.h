@@ -71,7 +71,7 @@
 #define HAVE_ALARM 1
 
 /* Define if aligned memory access is required */
-#define HAVE_ALIGNED_REQUIRED 1
+/* #undef HAVE_ALIGNED_REQUIRED */
 
 /* Define to 1 if you have the <alloca.h> header file. */
 #define HAVE_ALLOCA_H 1
@@ -83,7 +83,7 @@
 #define HAVE_ASINH 1
 
 /* Define to 1 if you have the <asm/types.h> header file. */
-/* #undef HAVE_ASM_TYPES_H */
+#define HAVE_ASM_TYPES_H 1
 
 /* Define to 1 if you have the `atanh' function. */
 #define HAVE_ATANH 1
@@ -117,7 +117,7 @@
 /* #undef HAVE_BROKEN_PTHREAD_SIGMASK */
 
 /* define to 1 if your sem_getvalue is broken. */
-#define HAVE_BROKEN_SEM_GETVALUE 1
+/* #undef HAVE_BROKEN_SEM_GETVALUE */
 
 /* Define if `unsetenv` does not return an int. */
 /* #undef HAVE_BROKEN_UNSETENV */
@@ -150,7 +150,7 @@
 /* #undef HAVE_CLOSE_RANGE */
 
 /* Define if the C compiler supports computed gotos. */
-/* #undef HAVE_COMPUTED_GOTOS */
+#define HAVE_COMPUTED_GOTOS 1
 
 /* Define to 1 if you have the `confstr' function. */
 #define HAVE_CONFSTR 1
@@ -162,7 +162,7 @@
 #define HAVE_COPYSIGN 1
 
 /* Define to 1 if you have the `copy_file_range' function. */
-#define HAVE_COPY_FILE_RANGE 1
+/* #undef HAVE_COPY_FILE_RANGE */
 
 /* Define to 1 if you have the <crypt.h> header file. */
 #define HAVE_CRYPT_H 1
@@ -226,7 +226,7 @@
 
 /* Define to 1 if you have the declaration of `RTLD_DEEPBIND', and to 0 if you
    don't. */
-#define HAVE_DECL_RTLD_DEEPBIND 0
+#define HAVE_DECL_RTLD_DEEPBIND 1
 
 /* Define to 1 if you have the declaration of `RTLD_GLOBAL', and to 0 if you
    don't. */
@@ -267,7 +267,7 @@
 /* #undef HAVE_DEV_PTC */
 
 /* Define to 1 if you have the /dev/ptmx device file. */
-/* #undef HAVE_DEV_PTMX */
+#define HAVE_DEV_PTMX 1
 
 /* Define to 1 if you have the <direct.h> header file. */
 /* #undef HAVE_DIRECT_H */
@@ -325,7 +325,7 @@
 #define HAVE_EXECV 1
 
 /* Define to 1 if you have the `explicit_bzero' function. */
-#define HAVE_EXPLICIT_BZERO 1
+/* #undef HAVE_EXPLICIT_BZERO */
 
 /* Define to 1 if you have the `explicit_memset' function. */
 /* #undef HAVE_EXPLICIT_MEMSET */
@@ -421,7 +421,7 @@
 #define HAVE_GAI_STRERROR 1
 
 /* Define to 1 if you have the `gamma' function. */
-/* #undef HAVE_GAMMA */
+#define HAVE_GAMMA 1
 
 /* Define if we can use gcc inline assembler to get and set mc68881 fpcr */
 /* #undef HAVE_GCC_ASM_FOR_MC68881 */
@@ -443,7 +443,7 @@
 #define HAVE_GETC_UNLOCKED 1
 
 /* Define to 1 if you have the `getentropy' function. */
-#define HAVE_GETENTROPY 1
+/* #undef HAVE_GETENTROPY */
 
 /* Define to 1 if you have the `getgrgid_r' function. */
 #define HAVE_GETGRGID_R 1
@@ -512,7 +512,7 @@
 #define HAVE_GETPWUID_R 1
 
 /* Define to 1 if the getrandom() function is available */
-#define HAVE_GETRANDOM 1
+/* #undef HAVE_GETRANDOM */
 
 /* Define to 1 if the Linux getrandom() syscall is available */
 /* #undef HAVE_GETRANDOM_SYSCALL */
@@ -533,7 +533,7 @@
 #define HAVE_GETSPNAM 1
 
 /* Define to 1 if you have the `getwd' function. */
-/* #undef HAVE_GETWD */
+#define HAVE_GETWD 1
 
 /* Define if glibc has incorrect _FORTIFY_SOURCE wrappers for memmove and
    bcopy. */
@@ -639,46 +639,46 @@
 #define HAVE_LINKAT 1
 
 /* Define to 1 if you have the <linux/auxvec.h> header file. */
-/* #undef HAVE_LINUX_AUXVEC_H */
+#define HAVE_LINUX_AUXVEC_H 1
 
 /* Define to 1 if you have the <linux/can/bcm.h> header file. */
-/* #undef HAVE_LINUX_CAN_BCM_H */
+#define HAVE_LINUX_CAN_BCM_H 1
 
 /* Define to 1 if you have the <linux/can.h> header file. */
-/* #undef HAVE_LINUX_CAN_H */
+#define HAVE_LINUX_CAN_H 1
 
 /* Define to 1 if you have the <linux/can/j1939.h> header file. */
 /* #undef HAVE_LINUX_CAN_J1939_H */
 
 /* Define if compiling using Linux 3.6 or later. */
-/* #undef HAVE_LINUX_CAN_RAW_FD_FRAMES */
+#define HAVE_LINUX_CAN_RAW_FD_FRAMES 1
 
 /* Define to 1 if you have the <linux/can/raw.h> header file. */
-/* #undef HAVE_LINUX_CAN_RAW_H */
+#define HAVE_LINUX_CAN_RAW_H 1
 
 /* Define if compiling using Linux 4.1 or later. */
 /* #undef HAVE_LINUX_CAN_RAW_JOIN_FILTERS */
 
 /* Define to 1 if you have the <linux/memfd.h> header file. */
-/* #undef HAVE_LINUX_MEMFD_H */
+#define HAVE_LINUX_MEMFD_H 1
 
 /* Define to 1 if you have the <linux/netlink.h> header file. */
-/* #undef HAVE_LINUX_NETLINK_H */
+#define HAVE_LINUX_NETLINK_H 1
 
 /* Define to 1 if you have the <linux/qrtr.h> header file. */
 /* #undef HAVE_LINUX_QRTR_H */
 
 /* Define to 1 if you have the <linux/random.h> header file. */
-/* #undef HAVE_LINUX_RANDOM_H */
+#define HAVE_LINUX_RANDOM_H 1
 
 /* Define to 1 if you have the <linux/tipc.h> header file. */
-/* #undef HAVE_LINUX_TIPC_H */
+#define HAVE_LINUX_TIPC_H 1
 
 /* Define to 1 if you have the <linux/vm_sockets.h> header file. */
 /* #undef HAVE_LINUX_VM_SOCKETS_H */
 
 /* Define to 1 if you have the <linux/wait.h> header file. */
-/* #undef HAVE_LINUX_WAIT_H */
+#define HAVE_LINUX_WAIT_H 1
 
 /* Define to 1 if you have the `lockf' function. */
 #define HAVE_LOCKF 1
@@ -708,7 +708,7 @@
 #define HAVE_MBRTOWC 1
 
 /* Define if you have the 'memfd_create' function. */
-#define HAVE_MEMFD_CREATE 1
+/* #undef HAVE_MEMFD_CREATE */
 
 /* Define to 1 if you have the <memory.h> header file. */
 /* #undef HAVE_MEMORY_H */
@@ -802,7 +802,7 @@
 #define HAVE_PREADV 1
 
 /* Define to 1 if you have the `preadv2' function. */
-#define HAVE_PREADV2 1
+/* #undef HAVE_PREADV2 */
 
 /* Define if you have the 'prlimit' functions. */
 #define HAVE_PRLIMIT 1
@@ -844,7 +844,7 @@
 #define HAVE_PWRITEV 1
 
 /* Define to 1 if you have the `pwritev2' function. */
-#define HAVE_PWRITEV2 1
+/* #undef HAVE_PWRITEV2 */
 
 /* Define to 1 if you have the `readlink' function. */
 #define HAVE_READLINK 1
@@ -1024,7 +1024,7 @@
 #define HAVE_SNPRINTF 1
 
 /* struct sockaddr_alg (linux/if_alg.h) */
-/* #undef HAVE_SOCKADDR_ALG */
+#define HAVE_SOCKADDR_ALG 1
 
 /* Define if sockaddr has sa_len member */
 /* #undef HAVE_SOCKADDR_SA_LEN */
@@ -1064,7 +1064,7 @@
 #define HAVE_STDLIB_H 1
 
 /* Has stdatomic.h with atomic_int and atomic_uintptr_t */
-/* #undef HAVE_STD_ATOMIC */
+#define HAVE_STD_ATOMIC 1
 
 /* Define to 1 if you have the `strftime' function. */
 #define HAVE_STRFTIME 1
@@ -1076,7 +1076,7 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strlcpy' function. */
-#define HAVE_STRLCPY 1
+/* #undef HAVE_STRLCPY */
 
 /* Define to 1 if you have the <stropts.h> header file. */
 #define HAVE_STROPTS_H 1
@@ -1192,7 +1192,7 @@
 #define HAVE_SYS_POLL_H 1
 
 /* Define to 1 if you have the <sys/random.h> header file. */
-#define HAVE_SYS_RANDOM_H 1
+/* #undef HAVE_SYS_RANDOM_H */
 
 /* Define to 1 if you have the <sys/resource.h> header file. */
 #define HAVE_SYS_RESOURCE_H 1
@@ -1279,7 +1279,7 @@
 #define HAVE_TMPNAM 1
 
 /* Define to 1 if you have the `tmpnam_r' function. */
-/* #undef HAVE_TMPNAM_R */
+#define HAVE_TMPNAM_R 1
 
 /* Define to 1 if your `struct tm' has `tm_zone'. Deprecated, use
    `HAVE_STRUCT_TM_TM_ZONE' instead. */
@@ -1415,7 +1415,7 @@
 #define PTHREAD_KEY_T_IS_COMPATIBLE_WITH_INT 1
 
 /* Defined if PTHREAD_SCOPE_SYSTEM supported. */
-/* #undef PTHREAD_SYSTEM_SCHED_SUPPORTED */
+#define PTHREAD_SYSTEM_SCHED_SUPPORTED 1
 
 /* Define as the preferred size in bits of long digits */
 /* #undef PYLONG_BITS_IN_DIGIT */
@@ -1440,7 +1440,7 @@
 /* #undef Py_DEBUG */
 
 /* Defined if Python is built as a shared library. */
-/* #undef Py_ENABLE_SHARED */
+#define Py_ENABLE_SHARED 1
 
 /* Define hash algorithm for str, bytes and memoryview. SipHash24: 1, FNV: 2,
    externally defined: 0 */
@@ -1456,7 +1456,7 @@
 /* #undef SETPGRP_HAVE_ARG */
 
 /* Define to 1 if you must link with -lrt for shm_open(). */
-/* #undef SHM_NEEDS_LIBRT */
+#define SHM_NEEDS_LIBRT 1
 
 /* Define if i>>j for signed int i does not extend the sign bit when i < 0 */
 /* #undef SIGNED_RIGHT_SHIFT_ZERO_FILLS */
@@ -1652,7 +1652,7 @@
 #define _PYTHONFRAMEWORK ""
 
 /* Define to force use of thread-safe errno, h_errno, and other functions */
-#define _REENTRANT 1
+/* #undef _REENTRANT */
 
 /* Define to the level of X/Open that your system supports */
 #define _XOPEN_SOURCE 700

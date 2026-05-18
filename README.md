@@ -144,7 +144,7 @@ Hitos 2 y 3: Preparación y Explotación (6 pts)
 En lugar de detenerme por el fallo de infraestructura del devcontainer, realicé un análisis profundo de las limitaciones del entorno. Primero, inyecté una versión estándar de Python en el rootfs. Esto me arrojó un error "not found" debido a que el entorno minimalista de BusyBox carece de las librerías dinámicas glibc necesarias para cargar el ejecutable.
 
 Para evadir esta restricción, reemplacé el intérprete por una versión estática de Python compilada con musl. Al ejecutar el PoC con esta versión, el script arrancó pero falló en la línea 5 con el error OSError: bind(): bad family. Con este error logré evidenciar que las versiones minimalistas de Python se compilan sin el soporte interno (socketmodule.c) para empaquetar estructuras sockaddr_alg (familia 38). Documenté todo este proceso para demostrar técnicamente la imposibilidad de ejecutar el exploit de Python dentro de un entorno BusyBox degradado, confirmando que la alternativa viable para este entorno es reescribir el PoC en C.
-
+![alt text](image.png)
 Hito 4: Mitigación (Parche del Kernel) (2 pts)
 Para la mitigación, apliqué la corrección directamente en el código fuente del kernel de Linux. Abrí el archivo kernel/linux/crypto/algif_aead.c y me dirigí a la función _aead_recvmsg (alrededor de la línea 282). Allí, cambié la variable de recepción (rsgl_src) por la de transmisión (tsgl_src) para forzar la separación de los buffers. Finalmente, utilicé el comando git diff apuntando a ese archivo para capturar la modificación y generar mi archivo de evidencia hito4_mitigacion.patch.
 
