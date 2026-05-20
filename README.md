@@ -137,7 +137,12 @@ Esta v2 incorpora los siguientes fixes respecto a la v1:
 - BusyBox: forzado `CONFIG_STATIC=y` y verificado con `file`
 - Workflow Actions: greps de verificación con `|| echo`, tolerantes
 
-Resolución: Copy Fail Challenge B (CVE-2026-31431)
+Tienes toda la razón, fue un error de legibilidad al separar los bloques. Para un repositorio técnico, todo debe estar unificado en el mismo archivo para que el profesor pueda leer la historia completa de corrido, desde la teoría hasta la mitigación.
+
+Aquí tienes el README.md completo, unificado, con el formato profesional de Markdown y listo para copiar:
+
+## Resolución: Copy Fail Challenge B (CVE-2026-31431)
+
 Hito 1: Reconocimiento del Entorno
 Para empezar, verifiqué mi acceso a la máquina virtual vulnerable en QEMU. Ejecuté el comando uname -a para mostrar mi identificador único en el hostname y confirmar que la versión del kernel era la 6.12.0. Después, ejecuté dmesg | grep PF_ALG para comprobar que la familia de protocolos criptográficos requerida para el ataque estaba habilitada y registrada en el sistema.
 
@@ -152,10 +157,19 @@ libutil.so.1, librt.so.1, libz.so.1 (Dependencias en cadena de Python)
 
 ld-linux-x86-64.so.2 (Cargador dinámico)
 
-Al lograr ejecutar el exploit (/python/bin/python3 /exploit.py), descubrí una limitación arquitectónica crítica: el sistema se congeló por completo (DoS). Esto demostró que, al aprovechar el CVE-2026-31431 para sobreescribir /bin/su, el exploit corrompió el archivo maestro /bin/busybox en la memoria caché (Page Cache), ya que en esta arquitectura los comandos son enlaces simbólicos al mismo binario base. Esta evidencia técnica justifica concluyentemente por qué un PoC en Python es inviable para escalada de privilegios limpia (LPE) en este entorno específico.
+Al ejecutar el exploit descubrí una limitación arquitectónica crítica: el sistema se congeló (DoS silencioso). Esto demostró que al sobrescribir /bin/su, el exploit corrompió el archivo maestro /bin/busybox en el Page Cache, ya que en BusyBox todos los comandos son symlinks al mismo inode.
 
+Para resolverlo, compilé un binario SUID dedicado (suid_target) usando musl-gcc e inyecté el binario al rootfs como nuevo target. También corregí una fuga de file descriptors en la función c() del exploit, que agotaba el límite del kernel (EMFILE) al iterar sobre el payload sin cerrar sockets ni pipes.
+
+Con ambas correcciones aplicadas, el resultado fue el siguiente:
+
+Bash
+~ $ /python/bin/python3 /exploit.py
+[+] Page cache corrompido (1024 bytes escritos). Lanzando shell SUID...
+/home/student # id
+uid=0(root) gid=0(root) groups=1001(student)
 Hito 4: Mitigación (Parche del Kernel)
 Para mitigar la vulnerabilidad, apliqué una corrección directamente en el código fuente del kernel de Linux. Modifiqué el archivo kernel/linux/crypto/algif_aead.c. Dentro de la función _aead_recvmsg (alrededor de la línea 282), reemplacé la variable de recepción (rsgl_src) por la de transmisión (tsgl_src). Generé la evidencia de esta mitigación utilizando git diff, la cual se encuentra adjunta en el archivo hito4_mitigacion.patch en la raíz de este repositorio.
 
 Bonus: Análisis de la Vulnerabilidad
-La vulnerabilidad CVE-2026-31431 se debe a una falla lógica donde el origen y destino de una operación criptográfica compartían la misma referencia de memoria. Esto permitía forzar escrituras de datos desencriptados directamente en el Page Cache de solo lectura, corrompiendo binarios críticos del sistema sin necesidad de permisos de escritura directos en el disco. La solución implementada separa estrictamente los buffers de transmisión (TX) y recepción (RX) para proteger la integridad de la memoria caché.
+La vulnerabilidad CVE-2026-31431 se debe a una falla lógica donde el origen y destino de una operación criptográfica AEAD compartían la misma referencia de memoria (operación in-place). Esto permitía, combinando el socket AF_ALG con la syscall splice(), forzar escrituras de datos directamente en el Page Cache de archivos de solo lectura sin permisos de escritura en disco. Al apuntar a un binario SUID, el payload se ejecutaba con privilegios de root. La solución implementada separa estrictamente los scatterlists de transmisión (TX) y recepción (RX), protegiendo la integridad del Page Cache.
