@@ -1,0 +1,12 @@
+diff --git a/kernel/linux/crypto/algif_aead.c b/kernel/linux/crypto/algif_aead.c
+--- a/kernel/linux/crypto/algif_aead.c
++++ b/kernel/linux/crypto/algif_aead.c
+@@ -279,7 +279,7 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
+        }
+ 
+        /* Initialize the crypto operation */
+-       aead_request_set_crypt(&areq->cra_u.aead_req, rsgl_src,
++       aead_request_set_crypt(&areq->cra_u.aead_req, tsgl_src,
+                               areq->first_rsgl.sgl.sgt.sgl, used, ctx->iv);
+        aead_request_set_ad(&areq->cra_u.aead_req, ctx->aead_assoclen);
+        aead_request_set_tfm(&areq->cra_u.aead_req, tfm);
