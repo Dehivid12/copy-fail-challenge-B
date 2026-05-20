@@ -122,6 +122,9 @@ cp -L /lib64/ld-linux-x86-64.so.2 "$INITRAMFS_DIR/lib64/"
 
 cp -r "$WORKSPACE_ROOT/python_env" "$INITRAMFS_DIR/python"
 cp "$WORKSPACE_ROOT/exploit.py" "$INITRAMFS_DIR/exploit.py"
+cp "$WORKSPACE_ROOT/suid_target" "$INITRAMFS_DIR/suid_target"
+chmod 4755 "$INITRAMFS_DIR/suid_target"
+
 find . | cpio -o -H newc 2>/dev/null | gzip > "$BUILD_DIR/initramfs.cpio.gz"
 
 SIZE=$(du -sh "$BUILD_DIR/initramfs.cpio.gz" | cut -f1)
